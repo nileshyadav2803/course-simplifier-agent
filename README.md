@@ -10,7 +10,6 @@
 ![Status](https://img.shields.io/badge/Status-Working-2ea44f?style=for-the-badge)
 
 *Edunet Foundation × IBM SkillsBuild Virtual Internship (AICTE-2026)*
-*Problem Statement No. 19*
 
 </div>
 
