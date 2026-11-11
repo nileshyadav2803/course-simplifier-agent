@@ -1,0 +1,19 @@
+# Credentials - never commit this file
+.env
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# pytest cache
+.pytest_cache/
+
+# OS / editor artefacts
+.DS_Store
+Thumbs.db
+*.swp
