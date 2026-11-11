@@ -2,66 +2,67 @@
 
 # 📚 Course Content Simplification Agent
 
-**An AI agent that explains any course content in simple language, at the level you choose.**
+**An AI agent that rewrites academic content at the learner's level — Beginner, Intermediate or Expert — using IBM Granite on IBM watsonx.ai.**
 
-![IBM watsonx.ai](https://img.shields.io/badge/IBM-watsonx.ai-052FAD?style=for-the-badge&logo=ibm&logoColor=white)
-![Granite](https://img.shields.io/badge/Model-IBM%20Granite%204%20H%20Small-0F62FE?style=for-the-badge)
-![Langflow](https://img.shields.io/badge/Built%20with-Langflow-8A2BE2?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Working-2ea44f?style=for-the-badge)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776ab?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-App-ff4b4b?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![IBM watsonx.ai](https://img.shields.io/badge/IBM%20watsonx.ai-Granite-0062ff?style=for-the-badge&logo=ibm&logoColor=white)](https://www.ibm.com/products/watsonx-ai)
+[![Built with IBM Bob](https://img.shields.io/badge/Built%20with-IBM%20Bob-7c3aed?style=for-the-badge&logo=ibm&logoColor=white)](https://www.ibm.com/)
 
-*Edunet Foundation × IBM SkillsBuild Virtual Internship (AICTE-2026)*
+*IBM University Engagement Project · Edunet Foundation × IBM SkillsBuild (AICTE 2026)*
+*Problem Statement 19 — Exploring the Power of Agentic AI with IBM Granite*
 
 </div>
 
 ---
 
-## 📑 Table of Contents
+## 📖 Overview
 
-- [About the Project](#-about-the-project)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
-- [Langflow Workflow](#-langflow-workflow)
-- [Demo](#-demo)
-- [Token Usage](#-token-usage)
-- [Setup Guide (Step by Step)](#-setup-guide-step-by-step)
-- [Repository Structure](#-repository-structure)
-- [Future Scope](#-future-scope)
-- [Author](#-author)
+Study material is often too advanced, jargon-heavy or too basic for the person reading it. This app takes any course text and re-explains it **at the level the learner picks**, so the same content works for beginners, intermediate learners and experts.
+
+The agent follows a fixed **System Message** (taken from the original Langflow flow in [`app.json`](app.json)) that defines it as a Course Content Simplification agent and tells it how to behave at each level.
 
 ---
 
-## 📖 About the Project
+## 🖼️ Screenshots
 
-Students often find course material hard to understand. This agent takes any course text and rewrites it in **simple language** based on the learner's level.
+<table>
+  <tr>
+    <td align="center"><b>Beginner level</b></td>
+    <td align="center"><b>Intermediate level</b></td>
+  </tr>
+  <tr>
+    <td><img src="Streamlit-app-beginner-mode.png" alt="Streamlit app, Beginner level response with token counts"></td>
+    <td><img src="Streamlit-app-intermediate-mode.png" alt="Streamlit app, Intermediate level response with token counts"></td>
+  </tr>
+</table>
 
-**How it works:**
-
-1. The user pastes the course text.
-2. The user writes a level below the text: **Beginner**, **Intermediate** or **Expert**.
-3. **IBM Granite** (running on IBM watsonx.ai) explains the content at that level.
+<details>
+<summary><b>🤖 How IBM Bob built the app (click to open)</b></summary>
+<br>
+<img src="bob-workflow.png" alt="IBM Bob coding assistant used to build the Streamlit app, all tasks completed 9/9">
+</details>
 
 ---
 
 ## ✨ Features
 
-- 📝 Paste any course text and get a simplified explanation
-- 🎚️ Three levels: Beginner, Intermediate, Expert
-- 🤖 Powered by IBM Granite through IBM watsonx.ai
-- 🔀 Visual low-code flow built in Langflow
-- 🪶 Small, simple and easy to run
+| | Feature | Description |
+|---|---|---|
+| 🎚️ | **Level selector** | Pick Beginner, Intermediate or Expert with pill-style radio buttons |
+| ⚡ | **Streaming output** | The answer appears word by word as the model writes it |
+| 💬 | **Chat history** | Earlier questions and answers stay visible as chat bubbles |
+| 📊 | **Token counter** | Input, output and total tokens shown after every response |
+| 🔐 | **Safe credentials** | API key, Project ID and URL are read from a `.env` file, never hard-coded |
+| 🧪 | **Unit tests** | 3 pytest tests that run without any real API call |
 
----
+### Level guide
 
-## 🧰 Tech Stack
-
-| Component | Technology |
-|-----------|------------|
-| LLM | IBM Granite (`ibm/granite-4-h-small`) |
-| AI Platform | IBM watsonx.ai (Dallas region) |
-| Workflow Builder | Langflow Desktop (Windows) |
-| Endpoint | `https://us-south.ml.cloud.ibm.com` |
-| Version Control | GitHub |
+| Level | What the model does |
+|---|---|
+| 🟢 **Beginner** | Very simple words and short sentences, explains every term, adds a real-life example |
+| 🟡 **Intermediate** | Clear language, keeps key technical terms with a short explanation |
+| 🔴 **Expert** | Concise and precise, keeps all technical terms, removes extra explanation |
 
 ---
 
@@ -69,172 +70,174 @@ Students often find course material hard to understand. This agent takes any cou
 
 ```mermaid
 flowchart LR
-    A[👤 User<br/>Course text + Level] --> B[💬 Chat Input]
-    B --> C[🧠 IBM watsonx.ai<br/>Granite + System Message]
-    C --> D[📤 Chat Output]
-    D --> E[✅ Simplified Explanation]
+    A[Learner pastes course text<br/>and selects a level] --> B[Streamlit app<br/>app.py]
+    B --> C[ibm-watsonx-ai<br/>Python SDK]
+    C --> D[IBM watsonx.ai]
+    D --> E[IBM Granite<br/>ibm/granite-4-h-small]
+    E --> F[Streamed simplified answer<br/>+ token counts]
+    F --> B
 ```
 
----
+**Model settings** (same as the original Langflow flow in `app.json`):
 
-## 🔀 Langflow Workflow
-
-The flow has 3 components:
-
-| # | Component | Purpose |
-|---|-----------|---------|
-| 1 | **Chat Input** | Takes the course text and level from the user |
-| 2 | **IBM watsonx.ai** | Runs `ibm/granite-4-h-small` with a System Message |
-| 3 | **Chat Output** | Shows the simplified explanation |
-
-![Langflow Workflow](workflow.png)
-
----
-
-## 🎬 Demo
-
-Tested in the Langflow Playground with two prompts.
-
-**Prompt 1 (Beginner):**
-
-```text
-Cloud computing means delivering computing services such as servers, storage, databases, and networking over the internet, so users pay only for what they use instead of owning physical hardware.
-
-Level: Beginner
-```
-
-**Prompt 2 (Intermediate):**
-
-```text
-A virtual machine is a software-based computer that runs inside a physical computer. It has its own operating system, CPU, memory, and storage, but these are shared from the host machine. Many virtual machines can run on one physical server at the same time, and each one works separately from the others.
-
-Level: Intermediate
-```
-
-![Playground Result](playground-result.png)
+| Setting | Value |
+|---|---|
+| Model | `ibm/granite-4-h-small` |
+| Temperature | `0.1` |
+| Max new tokens | `1000` |
+| Endpoint | `https://us-south.ml.cloud.ibm.com` (Dallas) |
 
 ---
 
 ## 📊 Token Usage
 
-Checked in watsonx.ai: **Project > Manage > Resource usage**
+Token usage of the watsonx.ai project `course-simplifier-agent`, measured before and after running the app.
 
-| Stage | Tokens Used |
-|-------|-------------|
-| Before the prompts | **165** |
-| After 2 prompts (Beginner + Intermediate) | **634** |
+| Before running the app | After running the app |
+|---|---|
+| 634 tokens | 6,793 tokens |
 
-<details>
-<summary>📷 Click to view screenshots</summary>
-
-**Before the Prompt**
-
-![Before Prompt](before-prompt-token.png)
-
-**After the Prompt**
-
-![After Prompt](after-prompt.png)
-
-</details>
+<table>
+  <tr>
+    <td><img src="before-prompt-token-usage.png" alt="watsonx.ai Resource usage before running the app, 634 tokens"></td>
+    <td><img src="after-prompt-token-usage.png" alt="watsonx.ai Resource usage after running the app, 6,793 tokens"></td>
+  </tr>
+</table>
 
 ---
 
-## 🚀 Setup Guide (Step by Step)
+## 🚀 Quick Start (Windows)
 
-<details>
-<summary><b>Step 1: Create the watsonx.ai project</b></summary>
+**You need:** Python 3.10 or later, an IBM Cloud account, and a watsonx.ai project.
 
-1. Log in to [IBM Cloud](https://cloud.ibm.com) and open **watsonx.ai**.
-2. Create a new project named `course-simplifier-agent` (region: Dallas).
-3. Associate a **watsonx.ai Runtime** service with the project.
-4. Copy the **Project ID** from the project's Manage tab.
-5. Create an **IBM Cloud API key** and save it safely.
+### 1. Clone the repository
 
-</details>
-
-<details>
-<summary><b>Step 2: Install Langflow Desktop</b></summary>
-
-1. Download the Langflow Desktop installer for Windows.
-2. Run the installer and finish the installation.
-3. Open Langflow Desktop.
-
-</details>
-
-<details>
-<summary><b>Step 3: Import the flow</b></summary>
-
-1. Download `app.json` from this repository.
-2. In Langflow, import the flow by uploading `app.json`.
-3. Open the imported flow.
-
-</details>
-
-<details>
-<summary><b>Step 4: Configure IBM watsonx.ai</b></summary>
-
-1. Click the **IBM watsonx.ai** component.
-2. Set the endpoint to `https://us-south.ml.cloud.ibm.com`.
-3. Enter your own **Project ID** and **API key**.
-4. Select the model `ibm/granite-4-h-small`.
-
-</details>
-
-<details>
-<summary><b>Step 5: Run the agent</b></summary>
-
-1. Click **Playground**.
-2. Type your course text, then write the level on a new line below it:
-
-```text
-Cloud computing means delivering computing services such as servers, storage, databases, and networking over the internet, so users pay only for what they use instead of owning physical hardware.
-
-Level: Beginner
+```cmd
+git clone https://github.com/nileshyadav2803/course-simplifier-agent.git
+cd course-simplifier-agent
 ```
 
-3. Press Enter and read the simplified explanation.
-4. Change the level to `Intermediate` or `Expert` to compare.
+### 2. Create and activate a virtual environment
 
-</details>
+```cmd
+python -m venv .venv
+.venv\Scripts\activate
+```
 
-> 🔒 **Security note:** `app.json` does not contain any API key. Never upload your API key or Project ID to GitHub.
+### 3. Install the dependencies
+
+```cmd
+pip install -r requirements.txt
+```
+
+### 4. Add your credentials
+
+```cmd
+copy .env.example .env
+```
+
+Open `.env` and fill in your values:
+
+```env
+WATSONX_API_KEY=your_ibm_cloud_api_key
+WATSONX_PROJECT_ID=your_watsonx_project_id
+WATSONX_URL=https://us-south.ml.cloud.ibm.com
+```
+
+> **Where to find them**
+> - **API key:** [cloud.ibm.com](https://cloud.ibm.com) → Manage → Access (IAM) → API keys → Create
+> - **Project ID:** [dataplatform.cloud.ibm.com](https://dataplatform.cloud.ibm.com) → your project → Manage → General
+
+> ⚠️ **Never upload `.env` to GitHub.** It holds your secret key and is already listed in `.gitignore`.
+
+### 5. Run the app
+
+```cmd
+streamlit run app.py
+```
+
+The app opens at **http://localhost:8501**.
 
 ---
 
-## 📁 Repository Structure
+## 🖥️ How to Use
 
-```text
+1. Choose a level: **Beginner**, **Intermediate** or **Expert**.
+2. Paste your course content into the text box.
+3. Click **✦ Simplify**.
+4. Read the simplified explanation and check the token cards below it.
+
+---
+
+## 🧪 Run the Tests
+
+```cmd
+pytest tests/ -v
+```
+
+None of the tests call the real API.
+
+| Test | What it checks |
+|---|---|
+| `test_load_env_raises_on_missing_values` | Missing `.env` values give a clear error that names each missing variable |
+| `test_system_message_is_loaded` | The System Message contains the level instructions from `app.json` |
+| `test_build_prompt_prepends_level` | The prompt is built as `Level: <text>` for all 3 levels |
+
+---
+
+## 📁 Project Structure
+
+```
 course-simplifier-agent/
-├── app.json                  # Exported Langflow flow
-├── workflow.png              # Langflow workflow screenshot
-├── playground-result.png     # Playground output
-├── before-prompt-token.png   # Token usage before prompts
-├── after-prompt.png          # Token usage after prompts
+├── app.py                                  # Streamlit app + watsonx.ai API call
+├── requirements.txt                        # Python dependencies
+├── .env.example                            # Credential placeholders (safe to share)
+├── .gitignore                              # Keeps .env, .venv and cache out of Git
+├── app.json                                # Original Langflow flow (reference)
+├── problem-statement.pdf                   # Problem Statement 19
+├── tests/
+│   └── test_app.py                         # 3 unit tests
+├── Streamlit-app-beginner-mode.png         # Screenshots used in this README
+├── Streamlit-app-intermediate-mode.png
+├── bob-workflow.png
+├── before-prompt-token-usage.png
+├── after-prompt-token-usage.png
 └── README.md
 ```
 
 ---
 
-## 🔮 Future Scope
+## 🛠️ Built With
 
-- Add a simple web interface for non-technical users
-- Support PDF and document upload
-- Support more languages (e.g. Hindi)
-- Add quizzes and summaries after each explanation
+| Tool | Role |
+|---|---|
+| [IBM Bob](https://www.ibm.com/) | AI coding assistant that generated and reviewed the app code |
+| [IBM watsonx.ai](https://www.ibm.com/products/watsonx-ai) | Runs the Granite model |
+| [IBM Granite](https://www.ibm.com/granite) (`ibm/granite-4-h-small`) | Writes the simplified explanations |
+| [Streamlit](https://streamlit.io/) | Web interface |
+| [ibm-watsonx-ai SDK](https://pypi.org/project/ibm-watsonx-ai/) | Python SDK to call watsonx.ai |
+| [python-dotenv](https://pypi.org/project/python-dotenv/) | Reads credentials from `.env` |
+| [Langflow](https://www.langflow.org/) | Original flow the app is based on (`app.json`) |
+
+---
+
+## 🔭 Future Scope
+
+- 🌐 **Regional languages:** explain content in Hindi and Marathi
+- 📄 **File upload:** upload notes or textbook pages directly
+- ❓ **Practice questions:** generate short questions after each explanation
 
 ---
 
 ## 👤 Author
 
-**Nilesh Yadav**
-BCA Student, Tilak Maharashtra Vidyapeeth, Pune
-
-[![GitHub](https://img.shields.io/badge/GitHub-nileshyadav2803-181717?style=flat&logo=github)](https://github.com/nileshyadav2803)
+**Nilesh Indradev Yadav**
+BCA graduate · Edunet Foundation × IBM SkillsBuild Intern (AICTE 2026)
 
 ---
 
 <div align="center">
 
-⭐ If you like this project, give it a star!
+Made with **IBM Bob** · **IBM watsonx.ai** · **IBM Granite**
 
 </div>
